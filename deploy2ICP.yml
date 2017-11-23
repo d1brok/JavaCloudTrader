@@ -1,0 +1,53 @@
+---
+# Application to deploy
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cloudtrader
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: cloudtrader
+        tier: frontend
+    spec:
+      containers:
+      - name: cloudtrader
+        image: mycluster.icp:8500/admin/cloudtrader
+        imagePullPolicy: Always
+        env:
+         - name: DB2_DBNAME
+           value: mydb2
+         - name: DB2_USER
+           value: mydb2
+         - name: DB2_PASSWORD
+           value: mydb2
+         - name: DB2_PORT
+           value: '31421'
+         - name: DB2_HOST
+           value: '10.134.108.9'  
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+      imagePullSecrets:
+        - name: admin.registrykey
+---
+# Service to expose frontend
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudtrader
+  labels:
+    app: cloudtrader
+    tier: frontend
+spec:
+  type: NodePort
+  ports:
+  - port: 9080 # Internal Port
+    protocol: TCP
+    nodePort: 31888
+  selector:
+    app: cloudtrader
+    tier: frontend

@@ -1,0 +1,12 @@
+# instantiate DB2 OLTP Helm chart in ICp and note the params
+
+docker build -t "cloudtrader" .
+# run locally
+# adopt docker.env
+docker run --env-file=docker.env -P cloudtrader
+http://localhost:YOURPORT/CloudTrader/
+
+# push to ICp
+docker tag cloudtrader mycluster.icp:8500/admin/cloudtrader
+docker push mycluster.icp:8500/admin/cloudtrader
+http://YOURIP:YOURPORT/CloudTrader/
