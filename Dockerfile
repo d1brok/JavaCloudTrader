@@ -4,7 +4,7 @@ WORKDIR /config
 
 ADD server.xml /config/serverX.xml
 
-ADD CloudTrader-0.0.1-SNAPSHOT.war /config/dropins/CloudTrader.war
+ADD target/CloudTrader-0.0.1-SNAPSHOT.war /config/dropins/CloudTrader.war
 
 RUN sudo mkdir -p /opt/ibm/wlp/usr/shared/resources/db2
 ADD db2jcc4.jar /opt/ibm/wlp/usr/shared/resources/db2/
